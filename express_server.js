@@ -58,6 +58,19 @@ app.post("/urls", (req, res) => {
   res.redirect(`/urls/${shortURL}`); // Redirect to the new URL show page
 });
 
+app.post("/urls/:id/delete", (req, res) => {
+  const id = req.params.id;
+
+  // Check if URL exists in urlDatabase
+  if (urlDatabase[id]) {
+    // If yes - delete
+    delete urlDatabase[id];
+    res.redirect("/urls"); // Redirect to main page
+  } else {
+    res.status(404).send("URL not found"); // If URL doesn't exist - return 404
+  }
+});
+
 app.get("/u/:id", (req, res) => {
   const id = req.params.id;
   const longURL = urlDatabase[id];
