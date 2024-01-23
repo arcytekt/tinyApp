@@ -51,17 +51,6 @@ app.get("/urls/:id", (req, res) => {
   res.render("urls_show", templateVars);
 });
 
-app.post("/urls/:id/update", (req, res) => {
-  const id = req.params.id;
-  const updatedLongURL = req.body.updatedLongURL;
-  if (urlDatabase[id]) {
-    urlDatabase[id] = updatedLongURL;
-    res.redirect("/urls"); // Redirect
-  } else {
-    res.status(404).send("URL not found"); // If URL doesn't exist, return 404
-  }
-});
-
 app.get("/urls.json", (req, res) => {
   res.json(urlDatabase);
 });
