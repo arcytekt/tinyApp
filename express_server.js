@@ -1,6 +1,9 @@
 const express = require("express");
+const cookieParser = require("cookie-parser");
 const app = express();
 const PORT = 8080;
+
+app.use(cookieParser());
 
 function generateRandomString() {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -14,7 +17,14 @@ function generateRandomString() {
   return result;
 }
 
+const defaultUsername = "Guest";
+
 app.use(express.urlencoded({ extended: true }));
+
+app.use((req, res, next) => {
+  res.locals.username = req.cookies.username || defaultUsername;
+  next();
+});
 
 app.set("view engine", "ejs");
 
