@@ -21,6 +21,7 @@ const defaultUsername = "Guest";
 
 app.use(express.urlencoded({ extended: true }));
 
+// Middleware to set the username in res.locals
 app.use((req, res, next) => {
   res.locals.username = req.cookies.username || defaultUsername;
   next();
@@ -32,6 +33,27 @@ const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
 };
+
+// Handle login POST request
+app.post("/login", (req, res) => {
+  const { username, password } = req.body;
+
+  // Authenticate the user (replace this with your authentication logic)
+  // For example, you might check credentials against a database
+  if (username && password) {
+    // Set the username in a cookie
+    res.cookie("username", username);
+  }
+
+  res.redirect("/urls"); // Redirect to the /urls page
+});
+
+// Handle logout POST request
+app.post("/logout", (req, res) => {
+  // Clear the username cookie
+  res.clearCookie("username");
+  res.redirect("/urls"); // Redirect to the /urls page
+});
 
 app.get("/urls", (req, res) => {
   const templateVars = { urls: urlDatabase };
